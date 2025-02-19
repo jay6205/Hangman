@@ -1,0 +1,36 @@
+<!-- game.html - Game Screen -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎩 HANGMAN GAME 🎩</h1>
+        <p>Guess the word:</p>
+        <p class="word">{{ word_display }}</p>
+        
+        <form action="/guess" method="post">
+            <input type="text" name="guess" maxlength="1" required>
+            <button type="submit">Guess</button>
+        </form>
+        
+        <p>Incorrect guesses left: {{ allowed_errors }}</p>
+        <p>Previous guesses: {{ guesses | join(', ') }}</p>
+        
+        {% if game_over %}
+            {% if '_' not in word_display %}
+                <p class="win">🎉 You Won!</p>
+            {% else %}
+                <p class="lose">💀 Game Over! The word was: {{ word }}</p>
+            {% endif %}
+            <form action="/reset" method="post">
+                <button type="submit">Restart Game</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
